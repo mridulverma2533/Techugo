@@ -1,0 +1,32 @@
+],
+"base": "stations",
+"main": {
+  "temp": 303.61,
+  "feels_like": 309.07,
+  "temp_min": 303.61,
+  "temp_max": 303.61,
+  "pressure": 999,
+  "humidity": 69,
+  "sea_level": 999,
+  "grnd_level": 988
+},
+"visibility": 10000,
+"wind": {
+  "speed": 3.93,
+  "deg": 209,
+  "gust": 6.47
+},
+"clouds": {
+  "all": 100
+},
+"dt": 1628260033,
+"sys": {
+  "country": "IN",
+  "sunrise": 1628208107,
+  "sunset": 1628255714
+},
+"timezone": 19800,
+"id": 1278994,
+"name": "Allahabad",
+"cod": 200
+}
