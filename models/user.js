@@ -63,6 +63,21 @@ userSchema.methods={
         return bcrypt.compareSync(password, this.hash_password);
     }
 }
+let userModel =mongoose.model("User",userSchema); 
 
-
-module.exports=mongoose.model("User",userSchema)
+userModel.findOne({role:"admin"}, (err, dbData)=>{
+    if(err) return console.log("err", err);
+    if(dbData) return;
+    userModel.create({
+        email:"admin@admin.com",
+        password:"12345678",
+        firstName:"admin",
+        lastName:"admin",
+        role: "admin",
+        username:"admin"
+    }, (err, dbData2)=>{
+        if(err) return console.log("err", err);
+       return console.log("dbData2", dbData2);
+    })
+})
+module.exports=userModel;

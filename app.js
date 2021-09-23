@@ -1,8 +1,8 @@
 const express=require("express");
 const mongoose=require("mongoose");
 const env=require("dotenv");
-const authRoutes=require("./routes/auth");
-const adminRoutes=require("./routes/admin/auth");
+const customerRoutes=require("./routes/customerRoutes");
+const adminRoutes=require("./routes/adminRoutes");
 
 const app=express();
 
@@ -18,8 +18,8 @@ mongoose.connect(process.env.MONGODB_URL,{useNewUrlparser:true})
     console.log(err);
 })
 
-app.use("/api",authRoutes);
-app.use("/api",adminRoutes);
+app.use("/api/customer",customerRoutes);
+app.use("/api/admin",adminRoutes);
 
 app.listen(process.env.PORT,()=>{
     console.log(`server running on port ${process.env.PORT}`);
