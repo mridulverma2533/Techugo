@@ -13,7 +13,7 @@ env.config();
 mongoose.connect(process.env.MONGODB_URL,{useNewUrlparser:true})
 .then(()=>{
     console.log("database connection successful");
-})
+}) //
 .catch((err)=>{
     console.log(err);
 })
