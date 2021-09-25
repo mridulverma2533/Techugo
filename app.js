@@ -3,6 +3,8 @@ const mongoose=require("mongoose");
 const env=require("dotenv");
 const customerRoutes=require("./routes/customerRoutes");
 const adminRoutes=require("./routes/adminRoutes");
+const passwordRoutes=require("./routes/passwordreset.js")
+
 
 const app=express();
 
@@ -20,6 +22,8 @@ mongoose.connect(process.env.MONGODB_URL,{useNewUrlparser:true})
 
 app.use("/api/customer",customerRoutes);
 app.use("/api/admin",adminRoutes);
+app.use("/api/password-reset",passwordRoutes);
+
 
 app.listen(process.env.PORT,()=>{
     console.log(`server running on port ${process.env.PORT}`);

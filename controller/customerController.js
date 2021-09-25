@@ -1,6 +1,7 @@
 const User=require("../models/user")
 const jwt=require("jsonwebtoken");
 const {validationResult}=require("express-validator");
+const token = require("../models/token");
 
 
 exports.singup=(req,res)=>{
@@ -60,5 +61,16 @@ exports.singin=(req,res)=>{
             return res.status(400).json('Invalid username address')
         }
     })
+}
+exports.logout=async(req,res)=>{
+    try {
+        req.user.tokens=[]
+      await req.user.save()
+       res.send("logout successful")
+
+    }catch(e){
+
+    }
+
 }
 
