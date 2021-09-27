@@ -144,7 +144,7 @@ exports.forgotPassword = (req,res)=>{
         const {email} = req.body;
         let otp = generateOTP(6);
         send(email, "FORGOT PASSWORD",otp )
-        return res.status(200).json({ updatedAddress })
+        return res.status(200).json({ })
     } catch (error) {
         console.log("error", error);
         return res.status(400).json({ message: "somethink is wrong!" });
