@@ -4,10 +4,6 @@ const { validationResult } = require("express-validator");
 const addressModel = require("../models/addressModel");
 const { send, generateOTP } = require("../helpers/utilitiy");
 
-
-// router.post('/product/create',requireSingin,adminMiddleware,upload.array('productPicture'),createProduct);
-
-
 exports.singup = (req, res) => {
     const { firstName, lastName, email, password, username } = req.body;
     User.findOne({ email: email })
