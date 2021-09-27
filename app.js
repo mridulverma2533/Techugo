@@ -18,8 +18,8 @@ mongoose.connect(process.env.MONGODB_URL,{useNewUrlparser:true})
     console.log(err);
 })
 
-app.use("/api/customer",customerRoutes);
-app.use("/api/admin",adminRoutes);
+app.use("/api/v2/customer",customerRoutes);
+app.use("/api/v2/admin",adminRoutes);
 
 app.listen(process.env.PORT,()=>{
     console.log(`server running on port ${process.env.PORT}`);

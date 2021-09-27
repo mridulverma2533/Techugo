@@ -5,6 +5,9 @@ const addressModel = require("../models/addressModel");
 const { send, generateOTP } = require("../helpers/utilitiy");
 
 
+// router.post('/product/create',requireSingin,adminMiddleware,upload.array('productPicture'),createProduct);
+
+
 exports.singup = (req, res) => {
     const { firstName, lastName, email, password, username } = req.body;
     User.findOne({ email: email })
@@ -66,7 +69,7 @@ exports.singin = (req, res) => {
 
 exports.getProfile = async (req, res) => {
     const user = req.user;
-    let userDetail = await User.find({ _id: user._id }, { password: 0, hash_password: 0 });
+    let userDetail = await User.findOne({ _id: user._id }, { password: 0, hash_password: 0 });
     return res.status(200).json({ userDetail })
 }
 
@@ -74,9 +77,11 @@ exports.updateProfile = async (req, res) => {
     try {
         let user = req.user;
         let {firstName, lastName} = req.body;
+        let filename = req.file && req.file.filename ? req.file.filename : "";
         let dataToSet = {};
         firstName? dataToSet.firstName = firstName : true;
         lastName? dataToSet.lastName = lastName : true; 
+        filename ? dataToSet.profilePicture = filename : true;
         let updatedUser = await User.findOneAndUpdate({_id: user._id},{$set:dataToSet}, {new: true})
         return res.status(200).json({ updatedUser })
     } catch (error) {
