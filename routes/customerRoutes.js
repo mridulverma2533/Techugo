@@ -21,15 +21,15 @@ var storage = multer.diskStorage({
     });
 var upload = multer({ storage: storage, })
 
-router.post("/singup",validateSingupRequest,isRequestValidated,controller.singup );
-router.post("/singin",validateSinginRequest,isRequestValidated,controller.singin)
+router.post("/signup",validateSingupRequest,isRequestValidated,controller.singup );
+router.post("/signin",validateSinginRequest,isRequestValidated,controller.singin)
 router.get("/profile",auth, controller.getProfile)
 router.put("/profile",auth, upload.single("image"),controller.updateProfile)
 router.post("/address",auth,controller.addAddress)
 router.get("/address",auth,controller.getAddress)
 router.put("/address/:addressId",auth,controller.editAddress)
 router.post("/logout",auth,controller.logout)
-router.post("/forgotPassword",auth,controller.forgotPassword)
+router.post("/forgotPassword",controller.forgotPassword)
 
 
 
