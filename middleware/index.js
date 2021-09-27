@@ -1,8 +1,8 @@
 const jwt=require('jsonwebtoken');
 
 exports.requireSingin=(req,res,next)=>{
-    if(req.headers.authorization){
-        const token=req.headers.authorization.split(" ")[1];
+    if(req.headers.token){
+        const token=req.headers.token
         const user=jwt.verify(token,process.env.JWT_SECREAT);
         req.user=user;
         

@@ -28,6 +28,10 @@ exports.validateSinginRequest=[
     .withMessage("password must be atleast 6 character long")
 ];
 
+exports.addAddress = [
+    
+]
+
 
 exports.isRequestValidated=(req,res,next)=>{
  const errors=validationResult(req);
