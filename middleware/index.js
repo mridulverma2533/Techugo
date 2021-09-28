@@ -12,3 +12,10 @@ exports.requireSingin=(req,res,next)=>{
    
     next();
 }
+
+// exports.adminMiddleware=(req,res,next)=>{
+//     if(req.user.role!=='admin'){
+//         return res.status(400).json({message:'only admin can create the categories'})
+//     }
+//     next();
+// }

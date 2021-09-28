@@ -2,12 +2,6 @@
 const {check,validationResult}=require("express-validator");
 
 exports.validateSingupRequest=[
-    check('firstName')
-    .notEmpty()
-    .withMessage("firstName is required"),
-    check('lastName')
-    .notEmpty()
-    .withMessage("lastName is required"),
     check('email')
     .isEmail()
     .withMessage("valid email is required"),
