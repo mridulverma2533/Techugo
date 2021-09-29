@@ -7,7 +7,7 @@ let transporter = nodemailer.createTransport({
 	port: 587,//process.env.EMAIL_SMTP_PORT,
 	secure: false,//process.env.EMAIL_SMTP_SECURE, // lack of ssl commented this. You can uncomment it.
 	auth: {
-		user: "techugodevelopment@gmail.com",//process.env.EMAIL_SMTP_USERNAME,
+		user: "techugodevlopment@gmail.com",//process.env.EMAIL_SMTP_USERNAME,
 		pass: "Techugo@123"
 	}
 });
@@ -15,7 +15,7 @@ console.log(">>>>>>>>",process.env.MONGODB_URL);
 exports.send = function (to, subject, html)
 {
 	transporter.sendMail({
-		from: "techugodevelopment@gmail.com", 
+		from: "techugodevlopment@gmail.com", 
 		to: to, 
 		subject: subject, // Subject line e.g. 'Hello ✔'
 		//text: text, // plain text body e.g. Hello world?

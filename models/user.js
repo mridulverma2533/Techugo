@@ -39,6 +39,9 @@ const userSchema=new mongoose.Schema({
     },
     profilePicture:{
         type:String
+    },
+    forgotPasswordOtp:{
+        type:String
     }
 },{timestamps:true});
 

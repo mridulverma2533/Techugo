@@ -3,9 +3,9 @@ const multer  = require('multer');
 const path=require("path");
 const fileExtension=require("file-extension")
 const crypto=require("crypto")
-const auth = require("../middleware/index.js").requireSingin;
-const {validateSingupRequest,validateSinginRequest, isRequestValidated}=require("../validators/validate")
-const controller = require("../controller/customerController")
+const auth = require("../middleware/index.js").authCustomer;
+const {validateSingupRequest,validateSinginRequest,validateProfile, isRequestValidated}=require("../validators/validate")
+const controller = require("../controller/customerController");
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
     callback(null, path.join(__dirname, "../uploads/"));
@@ -24,12 +24,21 @@ var upload = multer({ storage: storage, })
 router.post("/signup",validateSingupRequest,isRequestValidated,controller.singup );
 router.post("/signin",validateSinginRequest,isRequestValidated,controller.singin)
 router.get("/profile",auth, controller.getProfile)
-router.put("/profile",auth, upload.single("image"),controller.updateProfile)
+router.put("/profile",auth, validateProfile,upload.single("image"),controller.updateProfile)
 router.post("/address",auth,controller.addAddress)
 router.get("/address",auth,controller.getAddress)
 router.put("/address/:addressId",auth,controller.editAddress)
 router.post("/logout",auth,controller.logout)
 router.post("/forgotPassword",controller.forgotPassword)
+router.get("/productList",controller.getProduct)
+router.get("/productDetail/:productId",controller.productDetail);
+router.post("/cart",auth, controller.addToCart)
+router.get("/cart",auth, controller.getCart)
+router.put("/cart/:cartId",auth, controller.updateCart)
+router.delete("/cart/:cartId",auth, controller.deleteCart)
+
+
+
 
 
 

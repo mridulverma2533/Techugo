@@ -1,8 +1,30 @@
 const router=require("express").Router();
-const {singin}=require("../controller/adminController");
+const multer=require("multer");
+const shortid=require("shortid");
+const path=require("path");
+const auth=require("../middleware/index").authAdmin;
+const controller=require("../controller/adminController");
 const {validateSinginRequest, isRequestValidated } = require("../validators/adminValidate");
 
-router.post("/signin",validateSinginRequest,isRequestValidated,singin)
+
+ const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, path.join(path.dirname(__dirname), 'uploads'))
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      cb(null, shortid.generate()+ '-' + file.originalname)
+    }
+  })
+
+  
+ const upload=multer({storage});
+
+router.post('/product',auth,upload.array('image'),controller.createProduct);
+router.post("/signin",auth,validateSinginRequest,isRequestValidated,controller.singin)
+router.post("/logout",auth,controller.logout);
+router.get("/productList",auth,controller.getProduct);
+router.get("/productDetail/:productId",controller.productDetail)
+
 
 module.exports=router;
-//

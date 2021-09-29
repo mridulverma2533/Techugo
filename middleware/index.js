@@ -1,10 +1,13 @@
 const jwt=require('jsonwebtoken');
 
-exports.requireSingin=(req,res,next)=>{
+exports.authAdmin=(req,res,next)=>{
     if(req.headers.token){
         const token=req.headers.token
         const user=jwt.verify(token,process.env.JWT_SECREAT);
         req.user=user;
+        if(req.user.role!=="admin"){
+           return res.status(400).json("invalid user !")
+        }
         
     }else{
         return res.status(400).json({message:'Authorization required'});
@@ -13,9 +16,18 @@ exports.requireSingin=(req,res,next)=>{
     next();
 }
 
-// exports.adminMiddleware=(req,res,next)=>{
-//     if(req.user.role!=='admin'){
-//         return res.status(400).json({message:'only admin can create the categories'})
-//     }
-//     next();
-// }
+exports.authCustomer=(req,res,next)=>{
+    if(req.headers.token){
+        const token=req.headers.token
+        const user=jwt.verify(token,process.env.JWT_SECREAT);
+        req.user=user;
+        if(req.user.role!=="user"){
+            return res.status(400).json("invalid user !")
+         }
+        
+    }else{
+        return res.status(400).json({message:'Authorization required'});
+    }
+   
+    next();
+}

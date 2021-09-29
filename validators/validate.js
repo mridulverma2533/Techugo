@@ -1,4 +1,3 @@
-
 const {check,validationResult}=require("express-validator");
 
 exports.validateSingupRequest=[
@@ -20,6 +19,14 @@ exports.validateSinginRequest=[
     check('password')
     .isLength({min:6})
     .withMessage("password must be atleast 6 character long")
+];
+exports.validateProfile=[
+    check('firstName')
+    .notEmpty()
+    .withMessage("firstName is required"),
+    check('lastName')
+    .notEmpty()
+    .withMessage("lastName is required")
 ];
 
 exports.addAddress = [
