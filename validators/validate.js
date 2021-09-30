@@ -18,7 +18,7 @@ exports.validateSinginRequest=[
     .withMessage("username is required"),
     check('password')
     .isLength({min:6})
-    .withMessage("password must be atleast 6 character long")
+    .withMessage("invalid password !")
 ];
 exports.validateProfile=[
     check('firstName')

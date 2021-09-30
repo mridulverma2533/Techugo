@@ -5,21 +5,19 @@ const addressModel = require("../models/addressModel");
 const { send, generateOTP } = require("../helpers/utilitiy");
 const productModel = require("../models/productModel");
 const cartModel = require("../models/cartModel");
+const { successResponseWithData,ErrorResponse } = require("../helpers/apiResponse");
 
 exports.singup = (req, res) => {
     const { firstName, lastName, email, password, username } = req.body;
     User.findOne({ email: email })
         .exec((error, user) => {
-            if (user) return res.status(400).json({
-                message: "email allready exits"
-            })
+            if (user) return ErrorResponse(res ,"email allready exits !")
+            
         })
 
     User.findOne({ username: username })
         .exec((error, user) => {
-            if (user) return res.status(400).json({
-                message: "username allready exits"
-            })
+            if (user) return ErrorResponse(res ,"username allready exits !")
         })
 
     const _user = new User({
@@ -31,10 +29,10 @@ exports.singup = (req, res) => {
     });;
     _user.save((error, data) => {
         if (error) {
-            return res.status(400).json({ message: "somethink is wrong!" });
+             return ErrorResponse(res ,"Something is wrong!")
         }
         if (data) {
-            return res.status(200).json({ user: data })
+            return successResponseWithData(res, "Success", data );
         }
     })
 }
@@ -47,20 +45,28 @@ exports.singin = (req, res) => {
                 if (user.authenticate(req.body.password)) {
                     const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECREAT, { expiresIn: '2d' });
                     const { _id, firstName, lastName, username, role, fullName } = user;
-                    res.status(200).json({
-                        token,
+                    // res.status(200).json({
+                    //     statusCode:res.statusCode,
+                    //     APICODERESULT:true,
+                        // token,
+                        // user: {
+                        //     _id, firstName, lastName, username, role, fullName
+                        // }
+                        // });
+                    let data = {  token,
                         user: {
                             _id, firstName, lastName, username, role, fullName
-                        }
-                    });
+                        }}
+                   return successResponseWithData(res, "Success", data );
 
                 } else {
-                    return res.status(400).json({
-                        message: 'Invalid password'
-                    })
+                    // return res.status(400).json({
+                    //     message: 'Invalid password'
+                    // })
+                   return ErrorResponse(res ,"Invalid password !")
                 }
             } else {
-                return res.status(400).json('Invalid username address')
+                 return ErrorResponse(res ,"Invalid username !")
             }
         })
 }
@@ -68,7 +74,7 @@ exports.singin = (req, res) => {
 exports.getProfile = async (req, res) => {
     const user = req.user;
     let userDetail = await User.findOne({ _id: user._id }, { password: 0, hash_password: 0 });
-    return res.status(200).json({ userDetail })
+    return successResponseWithData(res, "Success", userDetail );
 }
 
 exports.updateProfile = async (req, res) => {
@@ -81,10 +87,10 @@ exports.updateProfile = async (req, res) => {
         lastName ? dataToSet.lastName = lastName : true;
         filename ? dataToSet.profilePicture = filename : true;
         let updatedUser = await User.findOneAndUpdate({ _id: user._id }, { $set: dataToSet }, { new: true })
-        return res.status(200).json({ updatedUser })
+        return successResponseWithData(res, "Success", updatedUser );
     } catch (error) {
         console.log("error", error);
-        return res.status(400).json({ message: "somethink is wrong!" });
+        return ErrorResponse(res ," something is wrong !")
     }
 }
 
@@ -94,10 +100,10 @@ exports.addAddress = async (req, res) => {
         const { firstName, lastName, pincode, phone, address, city, state, landmark, addressType } = req.body;
         let temp = { firstName, lastName, pincode, phone, address, city, state, landmark, addressType, userId: user._id }
         let addressDetail = await addressModel.create(temp);
-        return res.status(200).json({ addressDetail })
+        return successResponseWithData(res, "Success", addressDetail );
     } catch (error) {
         console.log("error", error);
-        return res.status(400).json({ message: "somethink is wrong!" });
+        return ErrorResponse(res ," something is wrong !") 
     }
 }
 
@@ -138,7 +144,7 @@ exports.editAddress = async (req, res) => {
 }
 
 exports.logout = async (req, res) => {
-    return res.status(200).json({})
+    return successResponseWithData(res, "Success", {} );
 }
 
 exports.forgotPassword = async (req, res) => {
@@ -149,10 +155,10 @@ exports.forgotPassword = async (req, res) => {
         let updatedUser = await User.findOneAndUpdate({ email }, { $set: { forgotPasswordOtp: otp } }, { new: true });
         console.log(updatedUser);
         send(email, "FORGOT PASSWORD", otp)
-        return res.status(200).json({})
+        return successResponseWithData(res, "Success", {} );
     } catch (error) {
         console.log("error", error);
-        return res.status(400).json({ message: "somethink is wrong!" });
+        return ErrorResponse(res ," something is wrong !")
     }
 }
 
