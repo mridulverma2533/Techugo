@@ -3,30 +3,33 @@ const productModel=require("../models/productModel");
 const shortid=require("shortid");
 const slugify=require("slugify");
 const jwt=require("jsonwebtoken");
+const { successResponseWithData,ErrorResponse } = require("../helpers/apiResponse");
+
 
 
 exports.singin=(req,res)=>{
     User.findOne({email:req.body.email})
     .exec((error,user)=>{
-        if(error) return res.status(400).json(error);
+        if(error) return ErrorResponse(res,error);
         if(user){
             if(user.authenticate(req.body.password) && user.role==='admin'){
                 const token=jwt.sign({_id:user._id, role:user.role},process.env.JWT_SECREAT, {expiresIn: '2d'});
                 const {_id,firstName,lastName,email,role,fullName}=user;
-                res.status(200).json({
+                let data={
                     token,
                     user:{
                        _id, firstName,lastName,email,role,fullName
                     }
-                });
+                }
+              return  successResponseWithData(res,"success",data);
 
             }else{
-                return res.status(400).json({
+                return ErrorResponse(res,{
                     message:'Invalid password'
                 })
             }
         }else{
-            return res.status(400).json('somethink went wrong')
+            return ErrorResponse(res,{message:'somethink went wrong'})
         }
     })
 }
@@ -62,26 +65,26 @@ exports.createProduct=async(req,res)=>{
         }
     
        let productData= await productModel.create(product)
-        return res.status(200).json(productData)
+        return successResponseWithData(res,"success",productData)
     } catch (error) {
-       return res.status(500).json(error)
+       return ErrorResponse(res,error)
     }
        
     }
 
     exports.logout = async(req,res)=>{
-        return res.status(200).json({})
+        return successResponseWithData(res,"success",{})
     };
 
     exports.getProduct = async (req, res) => {
         const user = req.user;
         let userDetail = await productModel.find();
-        return res.status(200).json({ userDetail })
+        return successResponseWithData(res,"success", userDetail )
     }
 
 
     exports.productDetail = async (req, res) => {
         const productId = req.params.productId;
         let productDetail = await productModel.findOne({_id:productId});
-        return res.status(200).json({ productDetail })
-    }
+        return successResponseWithData(res,"success",productDetail)
+    } 

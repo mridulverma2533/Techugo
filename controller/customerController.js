@@ -111,10 +111,10 @@ exports.getAddress = async (req, res) => {
     try {
         const user = req.user;
         let address = await addressModel.find({ userId: user._id, status: "ACTIVE" });
-        return res.status(200).json({ address })
+        return successResponseWithData(res,"success",address)
     } catch (error) {
         console.log("error", error);
-        return res.status(400).json({ message: "somethink is wrong!" });
+        return ErrorResponse(res,{ message: "somethink is wrong!" });
     }
 }
 
@@ -136,10 +136,10 @@ exports.editAddress = async (req, res) => {
         addressType ? dataToSet.addressType = addressType : true;
 
         let updatedAddress = await addressModel.findByIdAndUpdate({ _id: addressId }, { $set: dataToSet }, { new: true });
-        return res.status(200).json({ updatedAddress })
+        return successResponseWithData(res,"success",updatedAddress)
     } catch (error) {
         console.log("error", error);
-        return res.status(400).json({ message: "somethink is wrong!" });
+        return ErrorResponse(res,{ message: "somethink is wrong!" });
     }
 }
 
@@ -172,12 +172,12 @@ exports.getProduct = async (req, res) => {
     searchKey ? criteria.name = searchString : true;
 
     let products = await productModel.find(criteria).sort({ name: 1 });
-    return res.status(200).json({ products })
+    return successResponseWithData(res,"success", products );
 }
 exports.productDetail = async (req, res) => {
     const productId = req.params.productId;
     let productDetail = await productModel.findOne({ _id: productId });
-    return res.status(200).json({ productDetail })
+    return successResponseWithData(res,"success",productDetail)
 }
 
 exports.addToCart = async (req, res) => {
@@ -192,14 +192,14 @@ exports.addToCart = async (req, res) => {
         let itemInCart =  await cartModel.findOne({userId: user._id, item: itemId});
         if(itemInCart){
            let cartData =  await cartModel.findOneAndUpdate({_id: itemInCart._id}, {$inc:{qty: qty}}, {new: true});
-            return res.status(200).json({ cartData })
+            return successResponseWithData(res,"success",cartData)
         }
         let cartData = await cartModel.create(temp);
-        return res.status(200).json({ cartData })
+        return successResponseWithData(res,"success",cartData)
 
     } catch (error) {
         console.log("error", error);
-        return res.status(400).json({ message: "somethink is wrong!" });
+        return ErrorResponse(res,{ message: "somethink is wrong!" });
     }
 }
 
@@ -207,10 +207,10 @@ exports.getCart = async (req, res) => {
     try {
         const user = req.user;
         let cart = await cartModel.find({ userId: user._id }).populate("item");
-        return res.status(200).json({ cart })
+        return successResponseWithData(res,"success",cart)
     } catch (error) {
         console.log("error", error);
-        return res.status(400).json({ message: "somethink is wrong!" });
+        return ErrorResponse(res,{ message: "somethink is wrong!" });
     }
 }
 
@@ -219,10 +219,10 @@ exports.updateCart = async(req,res)=>{
         const cartId = req.params.cartId;
         const {qty} = req.body;
         let cartData =  await cartModel.findOneAndUpdate({_id: cartId}, {$inc:{qty}}, {new: true});
-            return res.status(200).json({ cartData })
+        return successResponseWithData(res,"success",cartData)
     } catch (error) {
         console.log("error", error);
-        return res.status(400).json({ message: "somethink is wrong!" });
+        return ErrorResponse(res,{ message: "somethink is wrong!" });
     }
 }
 
@@ -230,9 +230,9 @@ exports.deleteCart = async (req, res)=>{
     try {
         const cartId = req.params.cartId;
         await cartModel.deleteOne({_id: cartId});
-            return res.status(200).json({ })
+            return successResponseWithData(res,"success",{ })
     } catch (error) {
         console.log("error", error);
-        return res.status(400).json({ message: "somethink is wrong!" });
+        return ErrorResponse(res,{ message: "somethink is wrong!" });
     }
 }

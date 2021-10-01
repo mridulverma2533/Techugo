@@ -29,6 +29,12 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    shopName:{
+        type:String
+    },
+    shop_Url:{
+        type:String
+    },
     role:{
         type:String,
         enum:['user','admin', 'vendor'],
