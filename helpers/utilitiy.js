@@ -7,8 +7,8 @@ let transporter = nodemailer.createTransport({
 	port: 587,//process.env.EMAIL_SMTP_PORT,
 	secure: false,//process.env.EMAIL_SMTP_SECURE, // lack of ssl commented this. You can uncomment it.
 	auth: {
-		user: "techugodevlopment@gmail.com",//process.env.EMAIL_SMTP_USERNAME,
-		pass: "Techugo@123"
+		user: "mridulkumar852@gmail.com",//process.env.EMAIL_SMTP_USERNAME,
+		pass: "mridul@123456"
 	}
 });
 console.log(">>>>>>>>",process.env.MONGODB_URL);

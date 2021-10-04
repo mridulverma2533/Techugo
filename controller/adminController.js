@@ -3,6 +3,7 @@ const productModel=require("../models/productModel");
 const shortid=require("shortid");
 const slugify=require("slugify");
 const jwt=require("jsonwebtoken");
+const Order = require("../models/order.js");
 const { successResponseWithData,ErrorResponse } = require("../helpers/apiResponse");
 
 
@@ -80,6 +81,14 @@ exports.createProduct=async(req,res)=>{
         const user = req.user;
         let userDetail = await productModel.find();
         return successResponseWithData(res,"success", userDetail )
+    }
+    exports.orderDetails = async (req,res)=>{
+        
+        let orderDetail = await Order.findOne({_id:req.body._id});
+        return successResponseWithData(res,"success",orderDetail)
+
+
+
     }
 
 

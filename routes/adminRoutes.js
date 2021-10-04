@@ -25,6 +25,7 @@ router.post("/signin",validateSinginRequest,isRequestValidated,controller.singin
 router.post("/logout",auth,controller.logout);
 router.get("/productList",auth,controller.getProduct);
 router.get("/productDetail/:productId",controller.productDetail)
+router.get("/order",controller.orderDetails);
 
 
 module.exports=router;

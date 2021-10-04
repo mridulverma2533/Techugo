@@ -30,12 +30,15 @@ router.get("/address",auth,controller.getAddress)
 router.put("/address/:addressId",auth,controller.editAddress)
 router.post("/logout",auth,controller.logout)
 router.post("/forgotPassword",controller.forgotPassword)
+router.post("/passwordChange",controller.passwordchange)
 router.get("/productList",controller.getProduct)
 router.get("/productDetail/:productId",controller.productDetail);
 router.post("/cart",auth, controller.addToCart)
 router.get("/cart",auth, controller.getCart)
 router.put("/cart/:cartId",auth, controller.updateCart)
 router.delete("/cart/:cartId",auth, controller.deleteCart)
+router.post("/orders", controller.orderDetails)
+
 
 
 

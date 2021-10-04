@@ -4,8 +4,11 @@ const { validationResult } = require("express-validator");
 const addressModel = require("../models/addressModel");
 const { send, generateOTP } = require("../helpers/utilitiy");
 const productModel = require("../models/productModel");
+const Order = require("../models/order.js");
 const cartModel = require("../models/cartModel");
 const { successResponseWithData,ErrorResponse } = require("../helpers/apiResponse");
+
+const { Mongoose } = require("mongoose");
 
 exports.singup = (req, res) => {
     const { firstName, lastName, email, password, username } = req.body;
@@ -161,6 +164,34 @@ exports.forgotPassword = async (req, res) => {
         return ErrorResponse(res ," something is wrong !")
     }
 }
+// exports.passwordchange= async (req,res)=>{
+//     let passwordReset = await User.findOne({ forgotPasswordOtp });
+//     if (!passwordReset) {
+//       throw new Error("Invalid or expired password reset token");
+//     }
+//     // const isValid = await bcrypt.compare(token, passwordResetToken.token);
+//     // if (!isValid) {
+//     //   throw new Error("Invalid or expired password reset token");
+//     // }
+//     const hash = await bcrypt.hash(password, Number(bcryptSalt));
+//     await User.updateOne(
+//       {forgotPasswordOtp:req.body.forgotPasswordOtp},
+//       { $set: { password: hash } },
+//       { new: true }
+//     );
+// }
+exports.passwordchange= async (req,res)=>{
+    try{
+        const {password}=req.body
+        let dataToSet = {}
+        password ? dataToSet = password : true;
+        const user = await User.findOneAndUpdate({forgotPasswordOtp:req.body.forgotPasswordOtp},{ $set: dataToSet }, { new: true });
+        res.status(200).json({user})
+    }catch(e){
+        res.send(e)
+    }
+}
+
 
 exports.getProduct = async (req, res) => {
     const user = req.user;
@@ -179,6 +210,7 @@ exports.productDetail = async (req, res) => {
     let productDetail = await productModel.findOne({ _id: productId });
     return successResponseWithData(res,"success",productDetail)
 }
+
 
 exports.addToCart = async (req, res) => {
     try {
@@ -211,6 +243,20 @@ exports.getCart = async (req, res) => {
     } catch (error) {
         console.log("error", error);
         return ErrorResponse(res,{ message: "somethink is wrong!" });
+    }
+}
+
+exports.orderDetails= async (req,res)=>{
+    try{
+        const order =  new Order(req.body)
+        const result = await order.save()
+        res.status(200).json(result)
+
+        
+
+
+    }catch(e){
+    res.status(500).json(e)
     }
 }
 
